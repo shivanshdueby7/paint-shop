@@ -3,5 +3,17 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/products", "destination": "/index.html" },
+    { "source": "/products/:slug", "destination": "/index.html" },
+    { "source": "/shades", "destination": "/index.html" },
+    { "source": "/wall", "destination": "/index.html" },
+    { "source": "/calculator", "destination": "/index.html" },
+    { "source": "/services", "destination": "/index.html" },
+    { "source": "/offers", "destination": "/index.html" },
+    { "source": "/trade", "destination": "/index.html" },
+    { "source": "/visit", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/admin/:path*", "destination": "/index.html" }
+  ]
 }
