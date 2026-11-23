@@ -4,16 +4,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "rewrites": [
-    { "source": "/products", "destination": "/index.html" },
-    { "source": "/products/:slug", "destination": "/index.html" },
-    { "source": "/shades", "destination": "/index.html" },
-    { "source": "/wall", "destination": "/index.html" },
-    { "source": "/calculator", "destination": "/index.html" },
-    { "source": "/services", "destination": "/index.html" },
-    { "source": "/offers", "destination": "/index.html" },
-    { "source": "/trade", "destination": "/index.html" },
-    { "source": "/visit", "destination": "/index.html" },
-    { "source": "/admin", "destination": "/index.html" },
-    { "source": "/admin/:path*", "destination": "/index.html" }
+    { "source": "/favicon.ico", "destination": "/favicon.svg" },
+    { "source": "/:path((?!api/|auth/|assets/|images/|favicon.svg).*)", "destination": "/index.html" }
   ]
 }
