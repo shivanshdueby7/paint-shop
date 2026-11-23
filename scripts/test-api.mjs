@@ -1,4 +1,5 @@
 import apiHandler from '../api/[...path].js';
+import productHandler from '../api/products/[slug].js';
 
 function fakeRes() {
   const res = {
@@ -19,7 +20,6 @@ const checks = [
   ['shades', { path: ['shades'] }, (b) => b.shades?.length > 300],
   ['offers', { path: ['offers'] }, (b) => b.offers?.length > 0],
   ['settings', { path: ['settings'] }, (b) => b.counts?.shades > 0],
-  ['product', { path: ['products', 'trucare-wall-putty'] }, (b) => b.product?.name === 'TruCare Wall Putty'],
   ['missing', { path: ['nope'] }, (b, r) => r.statusCode === 404],
 ];
 
@@ -31,6 +31,15 @@ for (const [name, query, assert] of checks) {
   if (!ok) failed++;
   console.log(`${ok ? 'PASS' : 'FAIL'} ${name} status=${res.statusCode}`);
 }
+
+const productRes = fakeRes();
+await productHandler(
+  { method: 'GET', query: { slug: 'trucare-wall-putty' }, url: '/api/products/trucare-wall-putty', headers: {} },
+  productRes,
+);
+const productOk = productRes.body?.product?.name === 'TruCare Wall Putty';
+if (!productOk) failed++;
+console.log(`${productOk ? 'PASS' : 'FAIL'} product-detail status=${productRes.statusCode}`);
 
 // Writes must be refused when no backend is configured.
 const res = fakeRes();

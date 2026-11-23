@@ -9,3 +9,5 @@ worker-build
 .chrome-shot
 .vercel
 *.log
+
+.vercel

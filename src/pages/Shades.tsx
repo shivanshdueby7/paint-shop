@@ -14,16 +14,29 @@ export default function Shades() {
   );
   const { data, error, loading } = useApi<ShadesPayload>('/api/shades');
   const navigate = useNavigate();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   // A shade chip anywhere on the site links here with ?q=CODE, so the card opens
   // already filtered to that colour instead of dumping 315 chips on you.
   const linked = params.get('q') ?? params.get('code') ?? '';
   const [query, setQuery] = useState(linked);
   const [family, setFamily] = useState('all');
-  const [brandSlug, setBrandSlug] = useState(defaultBrand.slug);
   const [selected, setSelected] = useState<string[]>([]);
-  const brand = brandBySlug(brandSlug);
   const [quoting, setQuoting] = useState(false);
+  // The brand lives in the URL and in local storage, so picking Berger survives
+  // a trip to the wall and back instead of snapping to Asian Paints.
+  const storedBrand = typeof window === 'undefined' ? null : window.localStorage.getItem('rg-shade-brand');
+  const brand = brandBySlug(params.get('brand') ?? storedBrand ?? defaultBrand.slug);
+
+  const chooseBrand = (slug: string) => {
+    try {
+      window.localStorage.setItem('rg-shade-brand', slug);
+    } catch {
+      // Private mode can refuse storage; the URL still carries the choice.
+    }
+    const next = new URLSearchParams(params);
+    next.set('brand', slug);
+    setParams(next, { replace: true });
+  };
 
   useEffect(() => {
     if (linked) setQuery(linked);
@@ -108,7 +121,7 @@ export default function Shades() {
               <button
                 key={b.slug}
                 type="button"
-                onClick={() => setBrandSlug(b.slug)}
+                onClick={() => chooseBrand(b.slug)}
                 aria-pressed={b.slug === brand.slug}
                 className={`chip !px-3 !py-1.5 !text-[0.68rem] ${b.slug === brand.slug ? 'chip-on' : ''}`}
               >
