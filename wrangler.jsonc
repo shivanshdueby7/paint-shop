@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rang-ghar-paint",
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-09-01",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rang-ghar-preview",
+      "database_id": "9fc99947-4e33-41cf-b376-a096e9e33798"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "rang-ghar-files"
+    }
+  ]
+}
