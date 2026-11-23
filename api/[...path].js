@@ -24,8 +24,16 @@ export default async function handler(req, res) {
     });
   }
 
+  // Vercel's Node runtime does not always populate req.query for catch-all
+  // routes, so read the path straight from the request URL.
   const raw = req.query?.path;
-  const path = (Array.isArray(raw) ? raw : raw ? [raw] : []).join('/');
+  let parts = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  if (!parts.length) {
+    const pathname = new URL(req.url || '/', 'http://localhost').pathname;
+    parts = pathname.split('/').filter(Boolean);
+    if (parts[0] === 'api') parts.shift();
+  }
+  const path = parts.join('/');
 
   let body;
   if (path === 'catalog') body = catalog;
